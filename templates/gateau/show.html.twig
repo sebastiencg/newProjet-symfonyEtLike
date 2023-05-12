@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GateauController!{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="border border-dark row">
+
+        <h3>{{ gateau.name }}</h3>
+        <p><strong>{{ gateau.description }}</strong></p>
+   </div>
+    {%for ingredient in gateau.ingredients %}
+
+        <p> - {{ ingredient.name }}</p>
+
+    {% endfor %}
+
+
+{% endblock %}
