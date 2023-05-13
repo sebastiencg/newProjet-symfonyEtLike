@@ -6,8 +6,12 @@ use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[Vich\Uploadable]
 class Image
 {
     #[ORM\Id]
@@ -31,8 +35,15 @@ class Image
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'images', targetEntity: Gateau::class, orphanRemoval: true)]
-    private Collection $gateaux;
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    private ?Gateau $gateau = null;
+
+
+    /**
+    #[ORM\OneToOne(mappedBy: 'image', cascade: ['persist', 'remove'])]
+    private ?Profil $profil = null;
+
+     */
 
     public function __construct()
     {
@@ -89,31 +100,19 @@ class Image
     /**
      * @return Collection<int, Gateau>
      */
-    public function getGateaux(): Collection
+
+    public function getGateau(): ?Gateau
     {
-        return $this->gateaux;
+        return $this->gateau;
     }
 
-    public function addGateaux(Gateau $gateaux): self
+    public function setGateau(?Gateau $gateau): self
     {
-        if (!$this->gateaux->contains($gateaux)) {
-            $this->gateaux->add($gateaux);
-            $gateaux->setImages($this);
-        }
+        $this->gateau = $gateau;
 
         return $this;
     }
 
-    public function removeGateaux(Gateau $gateaux): self
-    {
-        if ($this->gateaux->removeElement($gateaux)) {
-            // set the owning side to null (unless already changed)
-            if ($gateaux->getImages() === $this) {
-                $gateaux->setImages(null);
-            }
-        }
 
-        return $this;
-    }
 
 }

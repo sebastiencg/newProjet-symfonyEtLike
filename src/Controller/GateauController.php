@@ -29,10 +29,7 @@ class GateauController extends AbstractController
         $gateau=new Gateau();
 
         $formGateau= $this->createForm(GateauType::class, $gateau);
-
         $formGateau->handleRequest($request);
-        dd($gateau);
-
         if($formGateau->isSubmitted() && $formGateau->isValid()){
 
             $ingredients = $formGateau->getData()->getIngredients();

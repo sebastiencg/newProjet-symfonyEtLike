@@ -16,6 +16,11 @@
         <p> - {{ ingredient.name }}</p>
 
     {% endfor %}
+    {% for image in gateau.images %}
+
+        <img style="width: 100px" src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="">
+
+    {% endfor %}
 
 
 {% endblock %}
