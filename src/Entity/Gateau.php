@@ -27,12 +27,16 @@ class Gateau
     #[ORM\OneToMany(mappedBy: 'gateau', targetEntity: Image::class, cascade: ["persist"])]
     private Collection $images;
 
+    #[ORM\OneToMany(mappedBy: 'gateau', targetEntity: Like::class)]
+    private Collection $likes;
+
 
 
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,6 +122,36 @@ class Gateau
             // set the owning side to null (unless already changed)
             if ($image->getGateau() === $this) {
                 $image->setGateau(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setGateau($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getGateau() === $this) {
+                $like->setGateau(null);
             }
         }
 

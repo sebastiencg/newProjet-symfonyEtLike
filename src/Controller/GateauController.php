@@ -39,7 +39,6 @@ class GateauController extends AbstractController
                 $newIngredient = new Ingredient();
                 $newIngredient->setName($ingredient->getName());
                 $newIngredient->setGateau($gateau);
-                $entityManager->persist($newIngredient);
 
             }
             $images = $formGateau->getData()->getImages();
